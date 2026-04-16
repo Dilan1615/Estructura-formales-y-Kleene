@@ -43,13 +43,13 @@ El sistema esta orientado a fines academicos para comprender mejor la teoria de 
 1. Clonar el repositorio:
 
 ```
-git clone https://github.com/tu_usuario/tu_repositorio.git
+git clone https://github.com/Dilan1615/Estructura-formales-y-Kleene.git
 ```
 
 2. Entrar al proyecto:
 
 ```
-cd tu_repositorio
+cd Estructura-formales-y-Kleene
 ```
 
 3. Crear entorno virtual:
