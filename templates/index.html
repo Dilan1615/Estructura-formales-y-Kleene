@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>App Lenguajes Formales</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        background: #fdf6ec; /* crema suave */
+        color: #4b2e2e; /* cafe oscuro */
+      }
+
+      .card {
+        border-radius: 15px;
+        background: #fff3e0 !important; /* beige claro */
+      }
+
+      .console-window {
+        border: 1px solid #e0a96d;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #3b2f2f; /* cafe oscuro */
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      .console-header {
+        background: #6f4e37; /* cafe medio */
+        color: #ffe0b2; /* crema */
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        border-bottom: 1px solid #e0a96d;
+      }
+
+      .console-body {
+        margin: 0;
+        padding: 1rem;
+        color: #ffd180; /* naranja suave */
+        font-family: ui-monospace, monospace;
+        white-space: pre-wrap;
+        word-break: break-word;
+        min-height: 140px;
+      }
+
+      /* NAVBAR */
+      .navbar {
+        background: #6f4e37 !important; /* cafe */
+      }
+
+      /* TABS */
+      .nav-tabs .nav-link {
+        color: #6f4e37;
+      }
+
+      .nav-tabs .nav-link.active {
+        background: #ffcc80;
+        color: #4b2e2e;
+        border-color: #ffb74d #ffb74d #fff;
+      }
+
+      /* BOTONES */
+      .btn-primary {
+        background-color: #fb8c00;
+        border: none;
+      }
+
+      .btn-success {
+        background-color: #8d6e63;
+        border: none;
+      }
+
+      .btn-warning {
+        background-color: #ffb74d;
+        border: none;
+        color: #4b2e2e;
+      }
+
+      .btn-info {
+        background-color: #ff9800;
+        border: none;
+      }
+
+      .btn-danger {
+        background-color: #d84315;
+        border: none;
+      }
+
+      .btn-light {
+        background-color: #ffe0b2;
+        border: none;
+        color: #4b2e2e;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black shadow">
+      <div class="container-fluid">
+        <span class="navbar-brand">Lenguajes Formales</span>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <!-- TABS -->
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <button
+            class="nav-link {{ 'active' if active_tab=='generar' else '' }}"
+            data-bs-toggle="tab"
+            data-bs-target="#generar"
+          >
+            Generar
+          </button>
+        </li>
+
+        <li class="nav-item">
+          <button
+            class="nav-link {{ 'active' if active_tab=='operaciones' else '' }}"
+            data-bs-toggle="tab"
+            data-bs-target="#operaciones"
+          >
+            Operaciones
+          </button>
+        </li>
+
+        <li class="nav-item">
+          <button
+            class="nav-link {{ 'active' if active_tab=='kleene' else '' }}"
+            data-bs-toggle="tab"
+            data-bs-target="#kleene"
+          >
+            Kleene
+          </button>
+        </li>
+      </ul>
+
+      <div class="tab-content mt-3">
+        <!-- GENERAR -->
+        <div
+          class="tab-pane fade {{ 'show active' if active_tab=='generar' else '' }}"
+          id="generar"
+        >
+          <div class="card p-4 bg-secondary">
+            <form method="POST">
+              <input type="hidden" name="operacion" value="generar" />
+              <input
+                name="L1"
+                class="form-control mb-2"
+                value="{{datos.L1}}"
+                placeholder="Alfabeto (a,b)"
+              />
+              <input
+                name="n"
+                class="form-control mb-2"
+                value="{{datos.n}}"
+                placeholder="Longitud"
+              />
+              <button class="btn btn-primary w-100">Generar cadenas</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- OPERACIONES -->
+        <div
+          class="tab-pane fade {{ 'show active' if active_tab=='operaciones' else '' }}"
+          id="operaciones"
+        >
+          <div class="card p-4 bg-secondary">
+            <form method="POST">
+              <input
+                name="L1"
+                class="form-control mb-2"
+                value="{{ datos.L1 }}"
+                placeholder="Lenguaje 1"
+              />
+              <input
+                name="L2"
+                class="form-control mb-2"
+                value="{{datos.L2}}"
+                placeholder="Lenguaje 2"
+              />
+              <input
+                name="cadena"
+                class="form-control mb-2"
+                value="{{datos.cadena}}"
+                placeholder="Cadena"
+              />
+
+              <div class="d-flex gap-2">
+                <button
+                  name="operacion"
+                  value="pertenece"
+                  class="btn btn-success"
+                >
+                  Pertenece
+                </button>
+                <button name="operacion" value="union" class="btn btn-warning">
+                  Unión
+                </button>
+                <button name="operacion" value="concat" class="btn btn-info">
+                  Concatenación
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- KLEENE -->
+        <div
+          class="tab-pane fade {{ 'show active' if active_tab=='kleene' else '' }}"
+          id="kleene"
+        >
+          <div class="card p-4 bg-secondary">
+            <form method="POST">
+              <input
+                name="L1"
+                class="form-control mb-2"
+                value="{{datos.L1}}"
+                placeholder="Lenguaje"
+              />
+              <input
+                name="n"
+                class="form-control mb-2"
+                value="{{datos.n}}"
+                placeholder="Iteraciones"
+              />
+
+              <div class="d-flex gap-2">
+                <button name="operacion" value="kleene" class="btn btn-danger">
+                  Kleene *
+                </button>
+                <button name="operacion" value="plus" class="btn btn-light">
+                  Kleene +
+                </button>
+                <button
+                  name="operacion"
+                  value="crecimiento"
+                  class="btn btn-primary"
+                >
+                  Analizar crecimiento
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULTADO -->
+      <div class="console-window mt-4">
+        <div class="console-header">Consola</div>
+        <pre class="console-body">{{ resultado }}</pre>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
