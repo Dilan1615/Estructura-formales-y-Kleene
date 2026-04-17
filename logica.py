@@ -1,5 +1,5 @@
 def generar_cadenas(alfabeto,max_len):
-    resultado = [""]
+    resultado = [""] #S
 
     for i in range(1,max_len+1):
         nuevas = []

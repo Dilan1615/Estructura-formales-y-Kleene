@@ -7,6 +7,7 @@ app = Flask(__name__)
 def index():
     resultado = ""
     active_tab = "generar"
+    hubo_operacion = False
 
     # para mantener datos en inputs
     datos = {
@@ -16,7 +17,15 @@ def index():
         "n": ""
     }
 
+    def formatear_lenguaje(lista):
+        # cadena vacía -> ε ; conjunto vacío -> ∅
+        if not lista:
+            return "∅"
+        salida = [("ε" if x == "" else x) for x in lista]
+        return "\n".join(salida)
+
     if request.method == "POST":
+        hubo_operacion = True
         operacion = request.form.get("operacion")
 
         # guardar datos
@@ -33,7 +42,7 @@ def index():
                 n = int(datos["n"])
 
                 res = logica.generar_cadenas(L1, n)
-                resultado = "\n".join(res)
+                resultado = formatear_lenguaje(res)
 
             # ---------------- OPERACIONES ----------------
             elif operacion == "pertenece":
@@ -50,7 +59,7 @@ def index():
                 L2 = datos["L2"].split(",")
 
                 res = logica.union(L1, L2)
-                resultado = "\n".join(res)
+                resultado = formatear_lenguaje(res)
 
             elif operacion == "concat":
                 active_tab = "operaciones"
@@ -58,7 +67,7 @@ def index():
                 L2 = datos["L2"].split(",")
 
                 res = logica.concatenacion(L1, L2)
-                resultado = "\n".join(res)
+                resultado = formatear_lenguaje(res)
 
             # ---------------- KLEENE ----------------
             elif operacion == "kleene":
@@ -67,7 +76,7 @@ def index():
                 n = int(datos["n"])
 
                 res = logica.kleeneStar(L1, n)
-                resultado = "\n".join(res)
+                resultado = formatear_lenguaje(res)
 
             elif operacion == "plus":
                 active_tab = "kleene"
@@ -75,7 +84,7 @@ def index():
                 n = int(datos["n"])
 
                 res = logica.kleenePlus(L1, n)
-                resultado = "\n".join(res)
+                resultado = formatear_lenguaje(res)
 
             elif operacion == "crecimiento":
                 active_tab = "kleene"
@@ -95,7 +104,8 @@ def index():
         "index.html",
         resultado=resultado,
         active_tab=active_tab,
-        datos=datos
+        datos=datos,
+        hubo_operacion=hubo_operacion
     )
 
 

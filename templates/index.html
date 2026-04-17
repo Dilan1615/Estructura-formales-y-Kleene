@@ -96,6 +96,81 @@
         border: none;
         color: #4b2e2e;
       }
+
+      .result-window {
+        border: 1px solid #e0a96d;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fff8ef;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+      }
+
+      .result-header {
+        background: #6f4e37;
+        color: #ffe0b2;
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        border-bottom: 1px solid #e0a96d;
+      }
+
+      .result-body {
+        padding: 1rem;
+      }
+
+      .result-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 0.5rem;
+      }
+
+      .result-item {
+        border-radius: 10px;
+        padding: 0.55rem 0.75rem;
+        font-family: ui-monospace, monospace;
+        text-align: center;
+        border: 1px solid #ffd8a8;
+        color: #4b2e2e;
+        background: #fff3e0;
+      }
+
+      /* color por longitud */
+      .len-0 {
+        background: #ede7f6; /* ε */
+        border-color: #d1c4e9;
+      }
+
+      .len-1 {
+        background: #e8f5e9;
+        border-color: #c8e6c9;
+      }
+
+      .len-2 {
+        background: #fff3e0;
+        border-color: #ffe0b2;
+      }
+
+      .len-3plus {
+        background: #ffebee;
+        border-color: #ffcdd2;
+      }
+
+      .result-empty {
+        color: #8d6e63;
+        font-style: italic;
+        margin: 0;
+      }
+
+      .result-emptyset {
+        display: inline-block;
+        padding: 0.45rem 0.7rem;
+        border-radius: 8px;
+        background: #f5f5f5;
+        border: 1px dashed #bdbdbd;
+        font-family: ui-monospace, monospace;
+        color: #5d4037;
+      }
     </style>
   </head>
 
@@ -253,9 +328,39 @@
       </div>
 
       <!-- RESULTADO -->
-      <div class="console-window mt-4">
-        <div class="console-header">Consola</div>
-        <pre class="console-body">{{ resultado }}</pre>
+      <div class="result-window mt-4">
+        <div class="result-header">Resultado</div>
+        <div class="result-body">
+          {% set res = (resultado or '')|replace('vacío', 'ε')|replace('vacio', 'ε') %}
+          {% if res.strip() %}
+            {% if res.strip() == '∅' %}
+              <span class="result-emptyset">∅ (conjunto vacío)</span>
+            {% else %}
+              <div class="result-grid">
+                {% for linea in res.split('\n') %}
+                  {% set item = linea.strip() %}
+                  {% if item %}
+                    {% if item == 'ε' %}
+                      <div class="result-item len-0">{{ item }}</div>
+                    {% elif item|length == 1 %}
+                      <div class="result-item len-1">{{ item }}</div>
+                    {% elif item|length == 2 %}
+                      <div class="result-item len-2">{{ item }}</div>
+                    {% else %}
+                      <div class="result-item len-3plus">{{ item }}</div>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% else %}
+            {% if hubo_operacion %}
+              <span class="result-emptyset">∅ (conjunto vacío)</span>
+            {% else %}
+              <p class="result-empty">Aún no hay resultados.</p>
+            {% endif %}
+          {% endif %}
+        </div>
       </div>
     </div>
 
